@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static  markdown %}
+{% block meta %}
+<meta name="keywords" content="{{ article.meta_keywords }}">
+<meta name="description" content="{{ article.meta_description }}">
+{% endblock %}
+{% block twitter %}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:style" content="@just_python">
+<meta name="og:url" content="{{ request.build_absolute_uri }}">
+<meta name="og:title" content="{{article.title}}">
+<meta name="og:description" content="{{article.meta_description}}">
+<meta name="og:image" content="{{request.sceme}}://{{request.get_host}}{% if article.image %}{{ article.image.url }}{& else &}{% static 'assets/img/code-1839406_1280.jpg' %}{% endif %}">
+
+{% endblock %}
+
+{% block main %}
+
+<header class="pt-100">
+    <div class="container">
+        <div class="col-md-9 col-lg-8 mx-auto">
+            <div class="text-center py-5">
+                <h2 class="title text-dark mb-5">{{ article.title }}</h2>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="text-start">
+                            <span>{{ article.created|date:'Y/m/d' }}</span>
+                        </div>                        
+                    </div>
+                    <div class="col-6">
+                        <div class="text-end">
+                           <a href="http://twitter.com/share?url={{ request.build_absolute_uri }}&text=nothpy - {{ article.title }}&hashtag=nothpy,python" target="_blank"><i class="fab fa-twitter sns-icon text-twitter"></i></a>
+                           <a href="http://www.facebook.com/share.php?u={{ request.build_absolute_uri }}&quote=nothpy - {{ article.title }}" target="_blank"><i class="fab fa-facebook-square sns-icon text-twitter"></i></a>
+                           <i class="far fa-copy pointer sns-icon text-secondary" onclick="copyUrl()"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="mb-5">
+    <div class="container">
+        <div class="col-md-9 col-lg-8 mx-auto">
+            <div class="article-body pb-5">
+                {{ article.body|markdown_to_html_with_escape }}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="col-md-9 col-lg-8 mx-auto">
+            <div class="bg-light text-center mb-5 py-4">
+                <h3 class="text-dark font-weight-bold mb-4">記事をシェアしよう!</h3>
+                <div class="py-2">
+                    <a href="http://twitter.com/share?url={{ request.build_absolute_uri }}&text=nothpy - {{ article.title }}&hashtags=nothpy,python" target="_blank"><i class="fab fa-twitter sns-icon text-twitter"></i></a>
+                    <a href="http://www.facebook.com/share.php?u={{ request.build_absolute_uri }}&quote=nothpy - {{ article.title }}" target="_blank"><i class="fab fa-facebook-square sns-icon text-twitter"></i></a>
+                    <i class="far fa-copy pointer sns-icon text-secondary" onclick="copyUrl()"></i>
+                </div>
+            </div>
+            <div class="py-4">
+                <div class="text-center">
+                    <h3 class="text-dark font-weight-bold">おすすめの記事</h3>
+                </div>
+                <div class="article">
+                    <a href="{% url 'article:article_detail' uuid=recommend.uuid %}">
+                        <div class="row">
+                            <div class="col-9">
+                                <div class="px-3">
+                                    <h4 class="article-title">{{ recommend.title }}</h4>
+                                    <p class="text-secondary article-text font-12 mb-0">{{ recommend.meta_description }}</p>
+                                    <span class="text-secondary font-14">{{ recommend.created|date:'Y/m/d'}}</span>
+                                </div>
+                            </div>  
+                            <div class="col-3">
+                                <div>
+                                     <img src="{% if recommend.image %}{{ recommend.image.url }}{& else &}{% static 'assets/img/code-1839406_1280.jpg' %}{% endif %}" class="img-center-cover w-100" height="100" alt="">
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+            <div class="text-center">
+                <a href="{% url 'article:article_list' %}" class="btn btn-lg btn-outline-primary">記事の一覧へ戻る<i class="fas fa-list-ul"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="text-end px-4 w-100 bottom-fixed" id="copiedMessage" style="display: none;">
+    <span class="py-2 px-3 bg-primary text-light font-weight-bold font-20">URLをコピーしました</span>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+    function copyUrl(){
+        $('#copiedMessage:not(:animated)').fadeIn('normal', function(){
+            if(navigator.clipboard){
+                let pageUrl = '{{ request.build_absolute_uri }}';
+                navigator.clipboard.writeText(pageUrl) ;               
+            }
+            $(this).delay(1000).fadeOut('slow');
+         })
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- icoと'の間のスペースで反映していなかった -->
+    <link rel="icon" type="image/png" href="{% static 'assets/img/favicon.ico' %}">
+    <link rel="apple-touch-icon" sizes="76×76" type="image/png" href="{% static 'assets/img/favicon.ico' %}">
+    {% block meta %}{% endblock %}
+    <title>nothpy</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400:500:600;700&family=Redressed&display=swap" >
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/nothpy.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/all.css' %}">
+    {% block twitter %}{% endblock %}
+</head>
+<body>
+
+    {% include 'includes/base/nav.html' %}
+        
+    <main>
+        {% block main %}{% endblock %}
+    </main>
+   
+    {% include 'includes/base/footer.html'%}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+
+    {% block js %}{% endblock %}
+</body>
+</html>
